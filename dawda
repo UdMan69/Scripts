@@ -1,0 +1,130 @@
+local _ENV = getgenv()
+local player = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local target = game.Workspace:WaitForChild("Football")
+local runService = game:GetService("RunService")
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/MaybeNotMandy/kavo-library/refs/heads/main/Redz", true))()
+local Window = Library.CreateLib("Blue Lock Rivals", "DarkTheme")
+
+local MainTab = Window:NewTab("Main")
+local SectionMain = MainTab:NewSection("Main Options")
+
+local connection
+local hasBall
+
+local originalPosition
+
+local function updateView()
+    if hasBall and hasBall.Value == false and player.Character and target then
+        local character = player.Character
+        local rootPart = character:FindFirstChild("HumanoidRootPart")
+        local humanoid = character:FindFirstChild("Humanoid")
+
+        if rootPart and humanoid then
+            local targetPosition = Vector3.new(target.Position.X, rootPart.Position.Y, target.Position.Z)
+            local direction = (targetPosition - rootPart.Position).Unit
+            rootPart.CFrame = CFrame.new(rootPart.Position, rootPart.Position + direction)
+            camera.CFrame = CFrame.new(
+                rootPart.Position - direction * 10 + Vector3.new(0, 5, 0), 
+                rootPart.Position
+            )
+        end
+    end
+end
+
+local function onHasBallChanged()
+    if hasBall.Value then
+        print("Aimbot")
+    else
+        print("Aimbot")
+    end
+end
+
+SectionMain:NewToggle("Auto Lock Ball", "Look At Ball Automatically", function(Value)
+    _ENV.AutoLockBall = Value
+
+    if _ENV.AutoLockBall then
+        local model = game.Workspace:FindFirstChild(player.Name)
+        local valuesFolder = model and model:FindFirstChild("Values")
+        hasBall = valuesFolder and valuesFolder:FindFirstChild("HasBall")
+
+        if hasBall then
+            hasBall:GetPropertyChangedSignal("Value"):Connect(onHasBallChanged)
+            connection = runService.RenderStepped:Connect(updateView)
+            onHasBallChanged()
+        else
+            warn("N1geers")
+        end
+    else
+        if connection then
+            connection:Disconnect()
+            connection = nil
+        end
+    end
+end)
+
+SectionMain:NewButton("Infinite Stamina", "No Decrease In Stamina", function()
+    while true do
+        local player = game:GetService("Players").LocalPlayer
+        
+        if player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Stamina") then
+            player.PlayerStats.Stamina.Value = 100
+        end
+        
+        task.wait()
+    end
+end)
+
+local function storeOriginalPosition()
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        originalPosition = player.Character.HumanoidRootPart.Position
+    end
+end
+
+local function teleportToPosition(position)
+    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(position)
+    end
+end
+
+local function executeHomeAction()
+    storeOriginalPosition()
+    teleportToPosition(Vector3.new(-234, 11, -47))
+    wait(0.2)
+    local args = {
+        [1] = 110,
+        [4] = Vector3.new(-234, 11, -47)
+    }
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
+    wait(0.2)
+    teleportToPosition(originalPosition)
+end
+
+local function executeAwayAction()
+    storeOriginalPosition()
+    teleportToPosition(Vector3.new(311, 11, -50))
+    wait(0.2)
+    local args = {
+        [1] = 110,
+        [4] = Vector3.new(311, 11, -50)
+    }
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
+    wait(0.2)
+    teleportToPosition(originalPosition)
+end
+
+local selectedOption = nil
+SectionMain:NewDropdown("Select your team", "Choose Home or Away", {"Home", "Away"}, function(option)
+    selectedOption = option
+end)
+
+SectionMain:NewButton("Score Goal", "score a goal xd", function()
+    if selectedOption == "Home" then
+        executeHomeAction()
+    elseif selectedOption == "Away" then
+        executeAwayAction()
+    else
+        warn("n1ggers")
+    end
+end)
