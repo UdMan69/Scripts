@@ -50,9 +50,9 @@ end)
 local function createESP(player)
 if player ~= LocalPlayer then
 local espBox = Drawing.new("Quad")
-espBox.Thickness = 0
+espBox.Thickness = 1
 espBox.Color = Color3.fromRGB(255, 255, 255) 
-espBox.Transparency = 0
+espBox.Transparency = 1
 espBox.Visible = false
 
 espList[player.Name] = espBox
@@ -99,5 +99,3 @@ espList[player.Name]:Remove()
 espList[player.Name] = nil
 end
 end)
---end print script
-print("Mr.Krabs has inject in to your asshole and loaded the rivals script")
