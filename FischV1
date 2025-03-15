@@ -119,7 +119,7 @@ local RunCount = false
 -- // // // Functions // // // --
 function ShowNotification(String)
     Fluent:Notify({
-        Title = "Mr.Krabs Hub",
+        Title = "Mr.Krabs ",
         Content = String,
         Duration = 5
     })
