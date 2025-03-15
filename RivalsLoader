@@ -2,8 +2,8 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield', true))(
 
 local Window = Rayfield:CreateWindow({
     Name = "Rivals",
-    LoadingTitle = "Loading Rivals",
-    LoadingSubtitle = 'Loading Rivals',
+    LoadingTitle = "Bomboclat ",
+    LoadingSubtitle = 'Rivals',
     DisableRayfieldPrompts = true,
     Theme = 'DarkBlue',
     ConfigurationSaving = {
