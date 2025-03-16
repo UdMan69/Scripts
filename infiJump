@@ -1,8 +1,8 @@
 local Player = game:GetService'Players'.LocalPlayer;
 local UIS = game:GetService'UserInputService';
 
-_G.JumpHeight = 50;
-
+_G.JumpHeight = 40;
+--func
 function Action(Object, Function) if Object ~= nil then Function(Object); end end
 
 UIS.InputBegan:connect(function(UserInput)
@@ -16,4 +16,3 @@ UIS.InputBegan:connect(function(UserInput)
         end)
     end
 end)
-print("InfiJump loaded")
