@@ -120,4 +120,3 @@ game:GetService("Players").PlayerAdded:Connect(function(v)
    end
 end)
 return Config
-print("Rivals esp has loaded")
